@@ -33,7 +33,7 @@ $VsfMember2 = [Text.Encoding]::Utf8.GetString([Convert]::FromBase64String($VsfMe
 $VsfMember3 = [Text.Encoding]::Utf8.GetString([Convert]::FromBase64String($VsfMember3.result_base64_encoded))
 $VsfMember4 = [Text.Encoding]::Utf8.GetString([Convert]::FromBase64String($VsfMember4.result_base64_encoded))
 
-# Recuperation des status "Commander", "Standby", "Member" par membres du stack. Conversion pour faciliter l'usage avec powershell
+# Recuperation des status "Commander", "Standby", "Member" par membres du stack. Conversion pour faciliter l'usage avec powershell.
 # Convert to String to Array of String, then filter.
 $StatusVsfMember1 = (($VsfMember1 -split "`n") | ? {$_ -match "status"}) | ConvertFrom-StringData -Delimiter ":" 
 $StatusVsfMember2 = (($VsfMember2 -split "`n") | ? {$_ -match "status"}) | ConvertFrom-StringData -Delimiter ":"
@@ -52,7 +52,7 @@ $TestStatusVsfMember2 = ($StatusVsfMember2.Values -like "Commander") -or ($Statu
 $TestStatusVsfMember3 = ($StatusVsfMember3.Values -like "Commander") -or ($StatusVsfMember3.Values -like "Standby")
 $TestStatusVsfMember4 = ($StatusVsfMember4.Values -like "Commander") -or ($StatusVsfMember4.Values -like "Standby")
 
-# Test si les membres ont bien 2 VSF liens actifs.
+# Test si les membres ont bien 2 liens VSF actifs.
 $TestLinksVsfMember1 = ($LinksVsfMember1.Lines -eq "2")
 $TestLinksVsfMember2 = ($LinksVsfMember2.Lines -eq "2")
 $TestLinksVsfMember3 = ($LinksVsfMember3.Lines -eq "2")

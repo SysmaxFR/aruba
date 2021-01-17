@@ -14,3 +14,4 @@ $Cookie = ($Session | ConvertFrom-Json).Cookie
 
 $Vlan = curl.exe --request GET --url http://X.X.X.X/rest/v7/vlans --header 'Content-Type: application/json' --cookie $Cookie
 $Vsf = curl.exe --request POST --url http://X.X.X.X/rest/v7/cli --header 'Content-Type: application/json' --cookie $Cookie --data "{\"cmd\":\"sow vsf member 3\"}"
+

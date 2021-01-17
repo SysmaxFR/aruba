@@ -1,3 +1,15 @@
+###
+# Permet de detecter et equilibrer les membres "Commander" et "Standby" d'un domain VSF en fonction de deux locaux techniques.
+#
+# Permet d'eviter apres une coupure d'un local technique que le "Commander" et le "Standby" se retrouvent du meme cote.
+# L'election avec priorite des membres a lieu seulement au redemarrage de la stack. Si les membres "Commander" et "Standby" sont deja
+#   elu, celui-ci ne va pas ceder sa place pour un membre disposant d'une priorite plus importante. Si par malchange le cas survient
+#   d'une perte du "Commander" et du "Standby" simultanement, la stack va redemarrer entièrement pour elire un membre "Commander" et un "Standby"
+#   en fonction de la priorite des membres du VSF et donc provoquer une coupure du reseau.
+#
+# Fonctionne seulement avec un stack VSF 4 membres.
+###
+
 # Fonctionne seulement avec powershell v7+.
 if(!($PSVersionTable.PSVersion.Major -eq "7")){ Write-Host "Script use only PwSH v7"; exit 0 }
 

@@ -40,34 +40,39 @@ $StatusVsfMember2 = (($VsfMember2 -split "`n") | ? {$_ -match "status"}) | Conve
 $StatusVsfMember3 = (($VsfMember3 -split "`n") | ? {$_ -match "status"}) | ConvertFrom-StringData -Delimiter ":"
 $StatusVsfMember4 = (($VsfMember4 -split "`n") | ? {$_ -match "status"}) | ConvertFrom-StringData -Delimiter ":"
 
-# Recuperation des links actifs par membres du stack. Par defaut 2 actifs.
+# Calcul des VSF links actifs par membres du stack. Par defaut 2 actifs.
 $LinksVsfMember1 = (($VsfMember1 -split "`n") | ? {$_ -match "Active, Peer member"}) | Measure-Object -Line
 $LinksVsfMember2 = (($VsfMember2 -split "`n") | ? {$_ -match "Active, Peer member"}) | Measure-Object -Line
 $LinksVsfMember3 = (($VsfMember3 -split "`n") | ? {$_ -match "Active, Peer member"}) | Measure-Object -Line
 $LinksVsfMember4 = (($VsfMember4 -split "`n") | ? {$_ -match "Active, Peer member"}) | Measure-Object -Line
 
-
+# Test si les membres sont "Commander" ou "Standby".
 $TestStatusVsfMember1 = ($StatusVsfMember1.Values -like "Commander") -or ($StatusVsfMember1.Values -like "Standby")
 $TestStatusVsfMember2 = ($StatusVsfMember2.Values -like "Commander") -or ($StatusVsfMember2.Values -like "Standby")
 $TestStatusVsfMember3 = ($StatusVsfMember3.Values -like "Commander") -or ($StatusVsfMember3.Values -like "Standby")
 $TestStatusVsfMember4 = ($StatusVsfMember4.Values -like "Commander") -or ($StatusVsfMember4.Values -like "Standby")
 
+# Test si les membres ont bien 2 VSF liens actifs.
 $TestLinksVsfMember1 = ($LinksVsfMember1.Lines -eq "2")
 $TestLinksVsfMember2 = ($LinksVsfMember2.Lines -eq "2")
 $TestLinksVsfMember3 = ($LinksVsfMember3.Lines -eq "2")
 $TestLinksVsfMember4 = ($LinksVsfMember4.Lines -eq "2")
 
-
+# Groupage des membres 1 et 2, local technique 1
 if($TestVsfMember1 -and $TestVsfMember2)
 {
     Write-Host "ERROR -> Use #redundancy switchover or AutoRemediation"
     Write-Host "Member1 ->"$StatusVsfMember1.Values", Member2 ->"$StatusVsfMember1.Values
-
+    
+    # Si $AutoRemediation est a "true", lancement de la commande de redemarrage du "Commander" afin de rééquilibrer en fonction de la priorite.
+    # x1 Commender ou Standby dans chaque locaux techniques.
     if($AutoRemediation -and $TestLinksVsfMember1 -and $TestLinksVsfMember2)
     {
-        Invoke-RestMethod -Uri "http://$IP/$Rest/cli" -Method POST -ContentType 'application/json' -WebSession $Cookie -Body ($VsfRedundancy|ConvertTo-Json) -TimeoutSec 2 #TimeOut car retour en erreur suite coupure avec le commander
+        # Mise en place d'un timeout car retour en erreur suite coupure de liaison avec le commander, renegotiation obligatoire.
+        Invoke-RestMethod -Uri "http://$IP/$Rest/cli" -Method POST -ContentType 'application/json' -WebSession $Cookie -Body ($VsfRedundancy|ConvertTo-Json) -TimeoutSec 2
     }
 }
+# Groupage des membres 3 et 4, local technique 2
 elseif($TestVsfMember3 -and $TestVsfMember4)
 {
     Write-Host "ERROR -> Use #redundancy switchover or AutoRemediation"
@@ -83,5 +88,5 @@ else
     Write-Host "OK -> Priority are balanced"
 }
 
-
+# Fermeture de la session RestAPI, suppression du cookie d'authentification.
 $Session = Invoke-RestMethod -Uri "http://$IP/$Rest/login-sessions" -Method DELETE -ContentType 'application/json' -WebSession $Cookie

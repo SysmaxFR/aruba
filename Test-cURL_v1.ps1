@@ -12,5 +12,5 @@ cd C:\Users\Administrateur\Downloads\curl-7.74.0_2-win64-mingw\bin
 $Session = curl.exe --request POST --url http://X.X.X.X/rest/v7/login-sessions --header 'Content-Type: application/json' --data "{\"userName\":\"manager\",\"password\":\"monsupermdp\"}"
 $Cookie = ($Session | ConvertFrom-Json).Cookie
 
-#$Vlan = curl.exe --request GET --url http://X.X.X.X/rest/v7/vlans --header 'Content-Type: application/json' --cookie $Cookie
+$Vlan = curl.exe --request GET --url http://X.X.X.X/rest/v7/vlans --header 'Content-Type: application/json' --cookie $Cookie
 $Vsf = curl.exe --request POST --url http://X.X.X.X/rest/v7/cli --header 'Content-Type: application/json' --cookie $Cookie --data "{\"cmd\":\"sow vsf member 3\"}"

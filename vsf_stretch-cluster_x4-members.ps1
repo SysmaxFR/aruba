@@ -11,7 +11,7 @@
 ###
 
 # Fonctionne seulement avec powershell v7+.
-if(!($PSVersionTable.PSVersion.Major -eq "7")){ Write-Host "Script use only PwSH v7"; exit 0 }
+if(!($PSVersionTable.PSVersion.Major -eq "7")){ Write-Host "Script use only PwSH v7"; exit 1 }
 
 # Definition des variables.
 # $AutoRemediation=$true permet de re-equilibrage des membres "Commander/Standby" en fonction du Stretch-Cluster -> REBOOT du membre "Commander".

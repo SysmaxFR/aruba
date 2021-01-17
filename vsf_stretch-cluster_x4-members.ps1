@@ -64,11 +64,11 @@ if($TestVsfMember1 -and $TestVsfMember2)
     Write-Host "ERROR -> Use #redundancy switchover or AutoRemediation"
     Write-Host "Member1 ->"$StatusVsfMember1.Values", Member2 ->"$StatusVsfMember1.Values
     
-    # Si $AutoRemediation est a "true", lancement de la commande de redemarrage du "Commander" afin de rééquilibrer en fonction de la priorite.
+    # Si $AutoRemediation est a "true", lancement de la commande de redemarrage du "Commander" afin de reequilibrer en fonction de la priorite.
     # x1 Commender ou Standby dans chaque locaux techniques.
     if($AutoRemediation -and $TestLinksVsfMember1 -and $TestLinksVsfMember2)
     {
-        # Mise en place d'un timeout car retour en erreur suite coupure de liaison avec le commander, renegotiation obligatoire.
+        # Mise en place d'un timeout car retour en erreur suite coupure de liaison avec le "Commander" -> Renegotiation obligatoire.
         Invoke-RestMethod -Uri "http://$IP/$Rest/cli" -Method POST -ContentType 'application/json' -WebSession $Cookie -Body ($VsfRedundancy|ConvertTo-Json) -TimeoutSec 2
     }
 }

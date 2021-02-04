@@ -70,6 +70,10 @@ if($TestVsfMember1 -and $TestVsfMember2)
 {
     Write-Host "ERROR -> Use #redundancy switchover or AutoRemediation"
     Write-Host "Member1 ->"$StatusVsfMember1.Values", Member2 ->"$StatusVsfMember1.Values
+
+    write-host "<-Start Result->"
+    write-host "VSFState=NOK, VSF unbalanced"
+    write-host "<-End Result->"
     
     # Si $AutoRemediation est a "true", lancement de la commande de redemarrage du "Commander" afin de reequilibrer en fonction de la priorite.
     # x1 Commender ou Standby dans chaque locaux techniques.
@@ -85,6 +89,10 @@ elseif($TestVsfMember3 -and $TestVsfMember4)
     Write-Host "ERROR -> Use #redundancy switchover or AutoRemediation"
     Write-Host "Member3 ->"$StatusVsfMember1.Values", Member4 ->"$StatusVsfMember1.Values
 
+    write-host "<-Start Result->"
+    write-host "VSFState=NOK, VSF unbalanced"
+    write-host "<-End Result->"
+
     if($AutoRemediation -and $TestLinksVsfMember3 -and $TestLinksVsfMember4)
     {
         Invoke-RestMethod -Uri "http://$IP/$Rest/cli" -Method POST -ContentType 'application/json' -WebSession $Cookie -Body ($VsfRedundancy|ConvertTo-Json) -TimeoutSec 2
@@ -93,6 +101,10 @@ elseif($TestVsfMember3 -and $TestVsfMember4)
 else
 {
     Write-Host "OK -> Priority are balanced"
+
+    write-host "<-Start Result->"
+    write-host "VSFState=OK, VSF balanced"
+    write-host "<-End Result->"
 }
 
 # Fermeture de la session RestAPI, suppression du cookie d'authentification.

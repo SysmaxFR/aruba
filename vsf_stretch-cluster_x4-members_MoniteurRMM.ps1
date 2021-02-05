@@ -12,7 +12,7 @@ if(!($PSVersionTable.PSVersion.Major -eq "7")){ Write-Host "Script use only PwSH
 # $AutoRemediation=$true permet de re-equilibrage des membres "Commander/Standby" en fonction du Stretch-Cluster -> REBOOT du membre "Commander".
 $IP = "$env:Stck-Ip"
 $Rest = "$env:Stck-Rest"
-$AutoRemediation = $env:Stck-AutoRemediation
+$AutoRemediation = "$env:Stck-AutoRemediation"
 $Login = @{
     "userName" = "$env:Stck-UserName"
     "password" = "$env:Stck-Password"

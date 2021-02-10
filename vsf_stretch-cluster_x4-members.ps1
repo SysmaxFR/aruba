@@ -71,7 +71,7 @@ $TestLinksVsfMember3 = ($LinksVsfMember3.Lines -eq "2")
 $TestLinksVsfMember4 = ($LinksVsfMember4.Lines -eq "2")
 
 # Groupage des membres 1 et 2, local technique 1
-if($TestVsfMember1 -and $TestVsfMember2)
+if($TestStatusVsfMember1 -and $TestStatusVsfMember2)
 {
     Write-Host "ERROR -> Use #redundancy switchover or AutoRemediation"
     Write-Host "Member1 ->"$StatusVsfMember1.Values", Member2 ->"$StatusVsfMember1.Values
@@ -85,7 +85,7 @@ if($TestVsfMember1 -and $TestVsfMember2)
     }
 }
 # Groupage des membres 3 et 4, local technique 2
-elseif($TestVsfMember3 -and $TestVsfMember4)
+elseif($TestStatusVsfMember3 -and $TestStatusVsfMember4)
 {
     Write-Host "ERROR -> Use #redundancy switchover or AutoRemediation"
     Write-Host "Member3 ->"$StatusVsfMember1.Values", Member4 ->"$StatusVsfMember1.Values

@@ -2,6 +2,7 @@ if( !(Test-Path ".\PowerShell-7-win-x64") )
 {
     Invoke-WebRequest https://github.com/PowerShell/PowerShell/releases/download/v7.1.1/PowerShell-7.1.1-win-x64.zip -OutFile PowerShell-7-win-x64.zip
     Expand-Archive ".\PowerShell-7-win-x64.zip"
+    Remove-Item ".\PowerShell-7-win-x64.zip" -Force
 }
 .\PowerShell-7-win-x64\pwsh.exe -Command {
 
